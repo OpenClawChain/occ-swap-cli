@@ -2,8 +2,14 @@
 
 [![npm version](https://img.shields.io/npm/v/@openclawchain/swap-cli.svg)](https://www.npmjs.com/package/@openclawchain/swap-cli)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![GitHub](https://img.shields.io/badge/GitHub-OpenClawChain-blue)](https://github.com/OpenClawChain/occ-swap-cli)
 
 Lightweight CLI for USDC and token swaps on NEAR Mainnet. Perfect for AI agents, DeFi automation, and hackathon projects.
+
+**Links:**
+- 📦 **npm:** https://www.npmjs.com/package/@openclawchain/swap-cli
+- 💻 **GitHub:** https://github.com/OpenClawChain/occ-swap-cli
+- 📚 **API:** https://api.openclawchain.org
 
 ## Why USDC for AI Agents?
 

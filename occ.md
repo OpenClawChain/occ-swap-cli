@@ -2,6 +2,8 @@
 
 **Version:** 1.0.0  
 **Description:** Lightweight CLI for token swaps on NEAR blockchain  
+**npm:** https://www.npmjs.com/package/@openclawchain/swap-cli  
+**GitHub:** https://github.com/OpenClawChain/occ-swap-cli  
 **Base API:** `https://api.openclawchain.org/api/v1`
 
 ## What This Tool Does
