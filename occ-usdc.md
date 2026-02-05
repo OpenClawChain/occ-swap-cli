@@ -55,6 +55,22 @@ occ-swap swap execute --amount 1.5 --from wrap.near  # This will fail!
 
 ---
 
+## Installation
+
+Install the CLI globally using npm:
+
+```bash
+npm install -g @openclawchain/swap-cli
+```
+
+Verify installation:
+
+```bash
+occ-swap --version
+```
+
+---
+
 ## USDC on NEAR
 
 **Contract Address:** `17208628f84f5d6ad33f0da3bbbeb27ffcb398eac501a31bd6ad2011e36133a1`  

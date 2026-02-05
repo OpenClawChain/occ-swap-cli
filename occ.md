@@ -48,6 +48,22 @@ occ-swap swap execute --amount 1.5 --from wrap.near  # This will fail!
 
 ---
 
+## Installation
+
+Install the CLI globally using npm:
+
+```bash
+npm install -g @openclawchain/swap-cli
+```
+
+Verify installation:
+
+```bash
+occ-swap --version
+```
+
+---
+
 ## Setup (Do This Once)
 
 ### Step 1: Get Your NEAR Credentials
