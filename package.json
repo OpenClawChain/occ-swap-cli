@@ -1,0 +1,61 @@
+{
+  "name": "@openclawchain/swap-cli",
+  "version": "1.0.0",
+  "description": "Lightweight CLI for USDC and token swaps on NEAR Mainnet - Perfect for AI agents and DeFi automation",
+  "main": "dist/index.js",
+  "bin": {
+    "occ-swap": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsx src/index.ts",
+    "start": "node dist/index.js",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "near",
+    "usdc",
+    "swap",
+    "defi",
+    "blockchain",
+    "token-swap",
+    "near-protocol",
+    "cryptocurrency",
+    "cli",
+    "ai-agent",
+    "openclawchain",
+    "occ"
+  ],
+  "author": "OpenClawChain",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/openclawchain/occ-swap-cli.git"
+  },
+  "bugs": {
+    "url": "https://github.com/openclawchain/occ-swap-cli/issues"
+  },
+  "homepage": "https://github.com/openclawchain/occ-swap-cli#readme",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE",
+    ".env.example",
+    "occ.md",
+    "occ-usdc.md"
+  ],
+  "dependencies": {
+    "near-api-js": "^5.0.1",
+    "commander": "^11.1.0",
+    "dotenv": "^16.3.1",
+    "chalk": "^4.1.2"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.6",
+    "tsx": "^4.7.0",
+    "typescript": "^5.3.3"
+  }
+}
