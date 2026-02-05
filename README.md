@@ -1,16 +1,23 @@
 # OCC Swap CLI
 
-Lightweight CLI for USDC and token swaps on NEAR Mainnet. Perfect for AI agents, DeFi automation, and hackathon projects.
-
 [![npm version](https://img.shields.io/npm/v/@openclawchain/swap-cli.svg)](https://www.npmjs.com/package/@openclawchain/swap-cli)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+Lightweight CLI for USDC and token swaps on NEAR Mainnet. Perfect for AI agents, DeFi automation, and hackathon projects.
+
+## Why USDC for AI Agents?
+
+- 💵 **Stable value** - No volatility, predictable pricing
+- 🌐 **Universal** - Accepted across DeFi protocols
+- 🤖 **Agent-friendly** - Perfect for autonomous trading
+- ⚡ **Fast settlement** - Quick swaps on NEAR blockchain
 
 ## Features
 
 - 🔄 Swap 28+ tokens on NEAR Mainnet including USDC, wNEAR, ETH, wBTC
 - 💵 USDC-focused for stable value operations
 - 🔐 Secure local signing (keys never leave your machine)
-- ⚡ Fast quotes and execution
+- ⚡ Fast quotes and execution (~10 minute quote validity)
 - 🤖 AI agent-friendly CLI interface
 
 ## Installation
@@ -26,7 +33,13 @@ occ-swap --version
 
 ## Quick Start
 
-### 1. Setup Environment
+### 1. Get NEAR Mainnet Account
+
+Create a NEAR Mainnet account at https://wallet.near.org/ and export your private key.
+
+⚠️ **Important:** Only NEAR Mainnet is supported. Testnet swaps are not available.
+
+### 2. Configure Environment
 
 Create `~/.occ/.env`:
 
@@ -41,52 +54,90 @@ NEAR_RPC_URL=https://rpc.mainnet.near.org
 
 **Note:** All three address variables should be set to your NEAR Mainnet account (same value).
 
-### 2. List Available Tokens
+### 3. List Available Tokens
 
 ```bash
 occ-swap swap tokens --blockchain near
 ```
 
-### 3. Get a Quote
+### 4. Get a Quote
 
 ```bash
 occ-swap swap quote --from wrap.near --to usdc --amount 1.5
 ```
 
-### 4. Execute Swap
+### 5. Execute Swap
 
 ```bash
 occ-swap swap execute --deposit-address <address-from-quote> --amount 1.5 --from wrap.near
 ```
 
-### 5. Check Status
+### 6. Check Status
 
 ```bash
 occ-swap swap status --deposit-address <address-from-quote>
 ```
 
-## Documentation
+## ⚠️ IMPORTANT: Required Workflow
 
-- **[Agent Guide (occ.md)](./occ.md)** - Complete guide for AI agents
-- **[USDC Guide (occ-usdc.md)](./occ-usdc.md)** - USDC-focused guide for hackathons
-- **[Comparison](./COMPARISON.md)** - Differences from full OCC CLI
+**You MUST follow this order:**
+
+1. **First:** Run `quote` to get the deposit address
+2. **Then:** Run `execute` using that deposit address (before quote expires!)
+3. **Finally:** Run `status` to check completion
+
+**Never skip the quote step!** The deposit address from the quote is required for execute to work.
+
+**Quotes expire in ~10 minutes.** If expired, get a new quote.
+
+```bash
+# ✅ CORRECT
+occ-swap swap quote --from wrap.near --to usdc --amount 1.5
+occ-swap swap execute --deposit-address <address> --amount 1.5 --from wrap.near
+
+# ❌ WRONG: Cannot execute without deposit address from quote
+occ-swap swap execute --amount 1.5 --from wrap.near
+```
+
+## USDC on NEAR
+
+**Contract:** `17208628f84f5d6ad33f0da3bbbeb27ffcb398eac501a31bd6ad2011e36133a1`  
+**Network:** NEAR Mainnet only  
+**Decimals:** 6  
+**Symbol:** `usdc`
+
+USDC on NEAR is a NEP-141 token with:
+- ✅ Fast transfers (2-3 second finality)
+- ✅ Low cost (~$0.01 per transaction)
+- ✅ Full NEAR DeFi compatibility
+- ✅ Bridged from Ethereum via Rainbow Bridge
 
 ## Supported Tokens
 
-28 tokens on NEAR Mainnet including:
-- **Stablecoins:** USDC, USDT, FRAX
-- **Major:** wNEAR, ETH, wBTC, BTC
-- **DeFi:** AURORA, SWEAT, HAPI, mpDAO
-- **AI:** RHEA, PUBLIC
-- **Meme:** BLACKDRAGON, SHITZU, and more
+28 tokens on NEAR Mainnet:
+
+### Major Tokens (7)
+- **wNEAR** - Wrapped NEAR
+- **ETH** - Bridged Ethereum
+- **USDC** - USD Coin ⭐
+- **USDT** - Tether USD
+- **FRAX** - Frax Stablecoin
+- **wBTC** - Wrapped Bitcoin
+- **BTC** - Native Bitcoin
+
+### DeFi & Ecosystem (8)
+AURORA, SWEAT, HAPI, mpDAO, ITLX, CFI, NPRO, STJACK
+
+### AI & Innovation (2)
+RHEA, PUBLIC
+
+### Meme & Community (7)
+BLACKDRAGON, SHITZU, ABG, NOEAR, JAMBO, GNEAR, PURGE
+
+### Other (4)
+NearKat, TURBO, ZEC, TESTNEBULA
 
 See full list: `occ-swap swap tokens --blockchain near`
-
-## Requirements
-
-- Node.js >= 18.0.0
-- NEAR Mainnet account with private key
-- Tokens in your NEAR wallet
 
 ## Commands
 
@@ -102,7 +153,17 @@ occ-swap swap tokens [--blockchain near] [--symbol <symbol>] [--refresh]
 occ-swap swap quote --from <token> --to <token> --amount <amount>
 ```
 
-**Important:** You MUST get a quote before executing a swap. The deposit address from the quote is required.
+**Examples:**
+```bash
+# Swap wNEAR to USDC
+occ-swap swap quote --from wrap.near --to usdc --amount 1.5
+
+# Swap USDC to wNEAR
+occ-swap swap quote --from usdc --to wrap.near --amount 10
+
+# Swap ETH to USDC
+occ-swap swap quote --from eth --to usdc --amount 0.5
+```
 
 ### Execute Swap
 
@@ -110,13 +171,74 @@ occ-swap swap quote --from <token> --to <token> --amount <amount>
 occ-swap swap execute --deposit-address <address> --amount <amount> --from <token>
 ```
 
-**Note:** Quotes expire in ~10 minutes. Execute before expiration or get a new quote.
+**What happens:**
+1. CLI prepares two transactions (storage deposit + token transfer)
+2. Signs them locally with your private key
+3. Broadcasts to NEAR blockchain
+4. Swap service detects deposit and executes swap
+5. You receive tokens at your recipient address
 
 ### Check Status
 
 ```bash
 occ-swap swap status --deposit-address <address>
 ```
+
+**Status values:**
+- `PENDING` - Waiting for deposit
+- `PROCESSING` - Swap in progress
+- `SUCCESS` - Swap completed!
+- `FAILED` - Swap failed (tokens refunded)
+
+## USDC Use Cases
+
+### 1. Stable Value Storage
+Convert volatile tokens to USDC:
+```bash
+occ-swap swap quote --from wrap.near --to usdc --amount 10
+```
+
+### 2. DeFi Integration
+Use USDC as base currency:
+```bash
+occ-swap swap quote --from eth --to usdc --amount 0.5
+```
+
+### 3. Cross-Protocol Payments
+USDC is accepted everywhere:
+```bash
+occ-swap swap quote --from aurora --to usdc --amount 100
+```
+
+### 4. Arbitrage Trading
+Trade with USDC as base:
+```bash
+occ-swap swap quote --from usdc --to wrap.near --amount 50
+```
+
+### 5. Treasury Management
+Maintain stable reserves:
+```bash
+occ-swap swap quote --from sweat --to usdc --amount 1000
+```
+
+## USDC Trading Pairs
+
+**Popular pairs:**
+
+### Stablecoins
+- USDC ↔ USDT - Stablecoin arbitrage
+- USDC ↔ FRAX - Algorithmic stablecoin
+
+### Major Tokens
+- USDC ↔ wNEAR - NEAR ecosystem base pair
+- USDC ↔ ETH - Ethereum exposure
+- USDC ↔ wBTC - Bitcoin exposure
+
+### DeFi Tokens
+- USDC ↔ AURORA - Aurora ecosystem
+- USDC ↔ SWEAT - Move-to-earn token
+- USDC ↔ HAPI - Security protocol
 
 ## Security
 
@@ -125,64 +247,55 @@ occ-swap swap status --deposit-address <address>
 - Keys never sent to any server
 - Open source and auditable
 
-## Use Cases
+## Requirements
 
-- **AI Agents:** Autonomous token swaps and treasury management
-- **DeFi Automation:** Automated trading strategies
-- **USDC Operations:** Stable value storage and payments
-- **Arbitrage:** Cross-DEX price difference exploitation
-- **Portfolio Management:** Automated rebalancing
+- Node.js >= 18.0.0
+- NEAR Mainnet account with private key
+- Tokens in your NEAR wallet
 
-## How It Works
+## Documentation
 
-### Transaction Flow
-
-1. **Get Quote** - API prepares swap parameters and generates deposit address
-2. **Sign Locally** - CLI signs transactions with your private key
-3. **Execute** - Transactions are broadcast to NEAR blockchain
-4. **Track** - Monitor swap status via API
-
-### NEAR Token Swaps
-
-For NEAR NEP-141 tokens, two transactions are executed:
-
-1. **Storage Deposit** - Registers the deposit address in the token contract
-2. **Token Transfer** - Transfers tokens to the deposit address
-
-The swap service monitors the deposit address and executes the swap automatically.
+- **[Agent Guide (occ.md)](./occ.md)** - Complete guide for AI agents
+- **[USDC Guide (occ-usdc.md)](./occ-usdc.md)** - USDC-focused guide for hackathons
+- **[Comparison](./COMPARISON.md)** - Differences from full OCC CLI
+- **[Publishing Guide](./PUBLISHING.md)** - How to publish updates
 
 ## Troubleshooting
 
 ### "Blockchain not supported"
-
-Currently only NEAR Mainnet is supported. Ensure you're using NEAR tokens.
+Only NEAR Mainnet is supported. Ensure you're using NEAR tokens.
 
 ### "Missing configuration"
-
-Check that all required environment variables are set in `~/.occ/.env`:
-```bash
-cat ~/.occ/.env
-```
+Check that all required environment variables are set in `~/.occ/.env`.
 
 ### "Token not found"
-
 Refresh the token cache:
 ```bash
 occ-swap swap tokens --refresh
 ```
 
 ### "Quote expired"
-
 Get a new quote - quotes expire in ~10 minutes:
 ```bash
 occ-swap swap quote --from wrap.near --to usdc --amount 1.5
 ```
 
+## USDC Hackathon Ideas
+
+1. **USDC Savings Agent** - Auto-convert earnings to USDC
+2. **USDC Payment Bot** - Accept any token, convert to USDC
+3. **USDC Arbitrage Trader** - Trade with USDC as base
+4. **USDC Treasury Manager** - Maintain reserves in USDC
+5. **USDC DeFi Aggregator** - Route USDC through best yields
+6. **USDC Tipping Bot** - Send USDC tips across platforms
+7. **USDC Subscription Service** - Collect recurring USDC payments
+8. **USDC Payroll System** - Distribute salaries in USDC
+
 ## Development
 
 ```bash
 # Clone repository
-git clone https://github.com/openclawchain/occ-swap-cli.git
+git clone https://github.com/OpenClawChain/occ-swap-cli.git
 cd occ-swap-cli
 
 # Install dependencies
@@ -195,14 +308,6 @@ npm run build
 npm link
 ```
 
-## Publishing
-
-```bash
-# Build and publish
-npm run build
-npm publish --access public
-```
-
 ## Related Projects
 
 - **occ-cli** - Full-featured OCC CLI with wallet management
@@ -211,9 +316,10 @@ npm publish --access public
 
 ## Support
 
-- **Issues:** https://github.com/openclawchain/occ-swap-cli/issues
+- **npm:** https://www.npmjs.com/package/@openclawchain/swap-cli
+- **GitHub:** https://github.com/OpenClawChain/occ-swap-cli
+- **Issues:** https://github.com/OpenClawChain/occ-swap-cli/issues
 - **API:** https://api.openclawchain.org
-- **Network:** NEAR Mainnet only
 
 ## License
 
@@ -225,4 +331,4 @@ Contributions welcome! Please open an issue or PR.
 
 ---
 
-Built with ❤️ by OpenClawChain
+Built with ❤️ by OpenClawChain for the USDC Ecosystem Hackathon
